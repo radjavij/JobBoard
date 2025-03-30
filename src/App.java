@@ -16,7 +16,16 @@ public class App {
         System.out.println("\nWelcome to the Job Board v0.1. What would you like to do?\n");
         System.out.println("1. Print information for all jobs\n");
         System.out.println("2. Search jobs based on various filters\n");
-        System.out.println("3. Exit the Program\n\n");
+        System.out.println("3. Show a specific job description\n");
+        System.out.println("4. Print information for all companies\n");
+        System.out.println("5. Show a specific company description\n");
+        System.out.println("6. Find applications for a job\n");
+        System.out.println("7. Post a new job\n");
+        System.out.println("8. Modify a current job posting\n");
+        System.out.println("9. Remove a current job posting\n");
+        System.out.println("10. Apply to a job\n");
+        System.out.println("11. Withdraw a job application\n");
+        System.out.println("12. Exit the Program\n\n");
         Scanner in = new Scanner(System.in);
         int choice = in.nextInt();
         
