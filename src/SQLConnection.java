@@ -49,10 +49,10 @@
  
              //Execute the query
              ResultSet results = stmt.executeQuery(query);
-             System.out.println("Title\t Company Name \t Education \t Department \t Open Positions \t Wage \t Description \t Post Date \t\n");
+             System.out.println("Title, Company Name, Education, Department, Open Positions, Wage, Description, Post Date\n");
              //Print each record
              while (results.next()) {
-                 System.out.printf("%s\t %s\t %s\t %s\t %d\t %.2f\t %s\t %s\t\n",
+                 System.out.printf("%s, %s, %s, %s, %d, %.2f, %s, %s\n",
                          results.getString("title"),
                          results.getString("companyName"),
                          results.getString("education"),
@@ -92,6 +92,50 @@
             System.out.println(e.getMessage()); //Handle exceptions
         }
      }
+
+     public void printSpecificDescription(String jobTitle, String company) {
+        try {
  
+            //Define the query as a string
+            String query = "SELECT Description FROM Jobs WHERE title='" + jobTitle + "' AND companyName='" + company + "'";
+
+            Statement stmt = sql.createStatement();
+            ResultSet results = stmt.executeQuery(query);
+            if (results.next()) {
+                System.out.println("\nDescription: " + results.getString("description"));
+            } else {
+                System.out.println("\nJob (" + jobTitle + ", " + company + ") not found.");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage()); //Handle exceptions
+        }
+     }
+
+     public void printCompanies()
+     {
+         try {
+ 
+             //Define the query as a string
+             String query = "SELECT * FROM Companies";
+ 
+             //Request a Statement object from SQL class
+             Statement stmt = sql.createStatement();
+ 
+             //Execute the query
+             ResultSet results = stmt.executeQuery(query);
+             System.out.println("Company Name, Manager, Point of Contact\n");
+             //Print each record
+             while (results.next()) {
+                 System.out.printf("%s, %s, %s\n",
+                         results.getString("companyName"),
+                         results.getString("manager"),
+                         results.getString("pointOfContact"));
+             }
+         }
+         catch(SQLException e) {
+             System.out.println(e.getMessage()); //Handle exceptions
+         }
+     }
  
     }

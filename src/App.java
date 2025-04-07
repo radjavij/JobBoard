@@ -39,6 +39,12 @@ public class App {
                     secondMenu();
                     break;
                 case 3:
+                    printDescription();
+                    break;
+                case 4:
+                    connect.printCompanies();
+                    break;
+                case 12:
                     return;
             }
         }
@@ -49,7 +55,12 @@ public class App {
         System.out.println("\nSearch jobs based on various filters\n\n");
         System.out.println("Which attribute do you want to search by?\n");
         System.out.println("1. Job Title\n");
-        System.out.println("2. Company Name\n\n");
+        System.out.println("2. Company Name\n");
+        System.out.println("3. Required Level of Education\n");
+        System.out.println("4. Department\n");
+        System.out.println("5. Available Positions\n");
+        System.out.println("6. Wage\n");
+        System.out.println("7. Post Date\n\n");
         Scanner in = new Scanner(System.in);
         int choice = in.nextInt();
         in.nextLine();
@@ -69,7 +80,52 @@ public class App {
                 System.out.println("\nQuery Results:\n");
                 connect.printByAttribute(query); 
                 break;
-                
+            case 3:
+                System.out.println("\nWhat Required Level of Education?\n");
+                String education = in.nextLine();
+                query = "education='" + education + "'";
+                System.out.println("\nQuery Results:\n");
+                connect.printByAttribute(query); 
+                break;
+            case 4:
+                System.out.println("\nWhat Department?\n");
+                String department = in.nextLine();
+                query = "department='" + department + "'";
+                System.out.println("\nQuery Results:\n");
+                connect.printByAttribute(query); 
+                break;
+            case 5:
+                System.out.println("\nHow many available positions?\n");
+                int numAvailable = in.nextInt();
+                in.nextLine();
+                query = "numAvailable=" + numAvailable;
+                System.out.println("\nQuery Results:\n");
+                connect.printByAttribute(query); 
+                break;
+            case 6:
+                System.out.println("\nWhat wage?\n");
+                double wage = in.nextDouble();
+                in.nextLine();
+                query = "wage=" + wage;
+                System.out.println("\nQuery Results:\n");
+                connect.printByAttribute(query); 
+                break;
+            case 7:
+                System.out.println("\nWhat Post Date?\n");
+                String postDate = in.nextLine();
+                query = "postDate='" + postDate + "'";
+                System.out.println("\nQuery Results:\n");
+                connect.printByAttribute(query); 
+                break;
         }
+    }
+
+    public static void printDescription() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat job title?\n");
+        String title = in.nextLine();
+        System.out.println("\nWhat Company?\n");
+        String company = in.nextLine();
+        connect.printSpecificDescription(title, company);
     }
 }
