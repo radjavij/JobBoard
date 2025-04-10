@@ -39,10 +39,16 @@ public class App {
                     secondMenu();
                     break;
                 case 3:
-                    printDescription();
+                    printJobDescription();
                     break;
                 case 4:
                     connect.printCompanies();
+                    break;
+                case 5:
+                    printCompanyDescription();
+                    break;
+                case 6:
+                    printSpecificJobApps();
                     break;
                 case 12:
                     return;
@@ -71,28 +77,28 @@ public class App {
                 String title = in.nextLine();
                 query = "title='" + title + "'";
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 2:
                 System.out.println("\nWhat Company?\n");
                 String company = in.nextLine();
                 query = "companyName='" + company + "'";
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 3:
                 System.out.println("\nWhat Required Level of Education?\n");
                 String education = in.nextLine();
                 query = "education='" + education + "'";
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 4:
                 System.out.println("\nWhat Department?\n");
                 String department = in.nextLine();
                 query = "department='" + department + "'";
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 5:
                 System.out.println("\nHow many available positions?\n");
@@ -100,32 +106,48 @@ public class App {
                 in.nextLine();
                 query = "numAvailable=" + numAvailable;
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 6:
-                System.out.println("\nWhat wage?\n");
+                System.out.println("\nWhat wage? (Format: x.xx)\n");
                 double wage = in.nextDouble();
                 in.nextLine();
                 query = "wage=" + wage;
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
             case 7:
-                System.out.println("\nWhat Post Date?\n");
+                System.out.println("\nWhat Post Date? (Format: YYYY-MM-DD)\n");
                 String postDate = in.nextLine();
                 query = "postDate='" + postDate + "'";
                 System.out.println("\nQuery Results:\n");
-                connect.printByAttribute(query); 
+                connect.printJobByAttribute(query); 
                 break;
         }
     }
 
-    public static void printDescription() {
+    public static void printJobDescription() {
         Scanner in = new Scanner(System.in);
         System.out.println("\nWhat job title?\n");
         String title = in.nextLine();
         System.out.println("\nWhat Company?\n");
         String company = in.nextLine();
-        connect.printSpecificDescription(title, company);
+        connect.printSpecificJobDescription(title, company);
+    }
+
+    public static void printCompanyDescription() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat Company?\n");
+        String company = in.nextLine();
+        connect.printSpecificCompanyDescription(company);
+    }
+
+    public static void printSpecificJobApps() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat Job Title?\n");
+        String title = in.nextLine();
+        System.out.println("\nWhat Company?\n");
+        String company = in.nextLine();
+        connect.printJobApplications(title, company);
     }
 }

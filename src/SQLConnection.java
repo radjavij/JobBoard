@@ -68,7 +68,7 @@
          }
      }
 
-     public void printByAttribute(String attribute) {
+     public void printJobByAttribute(String attribute) {
         try {
             String query = "SELECT * FROM Jobs WHERE " + attribute;
 
@@ -93,7 +93,7 @@
         }
      }
 
-     public void printSpecificDescription(String jobTitle, String company) {
+     public void printSpecificJobDescription(String jobTitle, String company) {
         try {
  
             //Define the query as a string
@@ -131,6 +131,50 @@
                          results.getString("companyName"),
                          results.getString("manager"),
                          results.getString("pointOfContact"));
+             }
+         }
+         catch(SQLException e) {
+             System.out.println(e.getMessage()); //Handle exceptions
+         }
+     }
+
+     public void printSpecificCompanyDescription(String company) {
+        try {
+ 
+            //Define the query as a string
+            String query = "SELECT Description FROM Jobs WHERE companyName='" + company + "'";
+
+            Statement stmt = sql.createStatement();
+            ResultSet results = stmt.executeQuery(query);
+            if (results.next()) {
+                System.out.println("\nDescription: " + results.getString("description"));
+            } else {
+                System.out.println("\nCompany (" + company + ") not found.");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage()); //Handle exceptions
+        }
+     }
+
+     public void printJobApplications(String title, String company)
+     {
+         try {
+ 
+             //Define the query as a string
+             String query = "SELECT * FROM JobApplications WHERE jobTitle='" + title + "' AND company='" + company + "'";
+ 
+             //Request a Statement object from SQL class
+             Statement stmt = sql.createStatement();
+ 
+             //Execute the query
+             ResultSet results = stmt.executeQuery(query);
+             System.out.println("Applicant Username, Application Date\n");
+             //Print each record
+             while (results.next()) {
+                 System.out.printf("%s, %s\n",
+                         results.getString("applicantUsername"),
+                         results.getString("appDate"));
              }
          }
          catch(SQLException e) {
