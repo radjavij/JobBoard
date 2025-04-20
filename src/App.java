@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class App {
     static String url = "jdbc:mariadb://localhost:3306/JobBoard?useSSL=false";
-    static String user = "radjavij";
+    static String user = "root";
     static String pswd = "jo$hRad9";
     static SQLConnection connect = new SQLConnection(url, user, pswd);
     public static void main(String[] args) {
@@ -163,5 +163,48 @@ public class App {
         System.out.println("\nWhat Company?\n");
         String company = in.nextLine();
         connect.printJobApplications(title, company);
+    }
+
+    public static void modifyJob() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat is the title of the Job you want to modify?\n");
+        String title = in.nextLine();
+        System.out.println("\nWhat is the name of the company for the Job you want to modify?\n");
+        String company = in.nextLine();
+        System.out.println("\nWhich attribute would you like to modify?\n");
+        System.out.println("1. Job Title\n");
+        System.out.println("2. Company Name\n");
+        System.out.println("3. Required Level of Education\n");
+        System.out.println("4. Department\n");
+        System.out.println("5. Available Positions\n");
+        System.out.println("6. Wage\n");
+        System.out.println("7. Post Date\n\n");
+        int choice = in.nextInt();
+        in.nextLine();
+        System.out.println("What is the new attribute? (Format for Wage: x.xx, Format for Date: YYYY-MM-DD)");
+        String newAttribute = in.nextLine();
+        switch(choice) {
+            case 1:
+                connect.updateJob(title, company, "title", newAttribute);
+                break;
+            case 2:
+                connect.updateJob(title, company, "companyName", newAttribute);
+                break;
+            case 3:
+                connect.updateJob(title, company, "education", newAttribute);
+                break;
+            case 4:
+                connect.updateJob(title, company, "department", newAttribute);
+                break;
+            case 5:
+                connect.updateJob(title, company, "numAvailable", newAttribute);
+                break;
+            case 6:
+                connect.updateJob(title, company, "wage", newAttribute);
+                break;
+            case 7:
+                connect.updateJob(title, company, "postDate", newAttribute);
+                break;
+        }        
     }
 }

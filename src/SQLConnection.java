@@ -8,10 +8,8 @@
  */
 
 
- import java.sql.*;
+import java.sql.*;
  import java.util.Scanner;
-
- import static java.sql.Types.NULL;
 
 public class SQLConnection {
  
@@ -37,8 +35,6 @@ public class SQLConnection {
          System.exit(0);
          }
      }
- 
-     //  Option 1: Print All Jobs
 
      public void printJobs()
      {
@@ -211,23 +207,201 @@ public class SQLConnection {
              System.out.println("\nWhat is the job description?\n");
              String description = in.nextLine();
 
-             System.out.println("\nWhat is today's date?\n");   // TODO: Maybe modify this to automatically determine the date?
+             System.out.println("\nWhat is today's date? (Format: YYYY-MM-DD)\n");  
              String date = in.nextLine();
 
 
-             String query = "INSERT INTO Jobs VALUES (" + title + ", " + company + ", " + education + ", " + department + ", " + numPositions + ", " + wage + ", " + description + ", " + date + ")";
+             String insertString = "INSERT INTO Jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-             //Request a Statement object from SQL class
-             Statement stmt = sql.createStatement();
-
-             //Execute the query
-             stmt.executeQuery(query); // TODO: Check how this works, if im doing it right
-
-             System.out.println("\nJob added successfully!");
+             //Building prepared statement
+             PreparedStatement insertStatement = sql.prepareStatement(insertString);
+             insertStatement.setString(1, title);
+             insertStatement.setString(2, company);
+             insertStatement.setString(3, education);
+             insertStatement.setString(4, department);
+             insertStatement.setInt(5, numPositions);
+             insertStatement.setFloat(6, wage);
+             insertStatement.setString(7, description);
+             insertStatement.setDate(8, Date.valueOf(date));
+ 
+             //Execute the query and confirm that the new record was added.
+             int rows = insertStatement.executeUpdate();
+             if (rows != 1) {
+                 System.out.println("ALERT: Insertion failed.");
+             }
          }
          catch(SQLException e) {
              System.out.println(e.getMessage());
          }
      }
- 
+
+     public void updateJob(String title, String company, String attribute, String newAttribute) {
+        try {
+        //Query String
+        String query = "UPDATE Jobs SET " + attribute + "=? WHERE title=? and companyName=?";
+
+        //Prepared Statement
+        PreparedStatement pstmt = sql.prepareStatement(query);
+        pstmt.setString(1, newAttribute);
+        pstmt.setString(2, title);
+        pstmt.setString(3, company);
+        
+
+        //Execute the update
+        pstmt.executeUpdate();
+
+        } catch(SQLException e) {
+            System.out.println(e.getMessage()); //Handles exception
+        }
     }
+
+    public void removeJob() {
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat is the title of the job you would like to remove?\n");
+        String title = in.nextLine();
+        System.out.println("What is the company of the job you would like to remove?");
+        String companyName = in.nextLine();
+
+    
+        String deleteJobString = "DELETE FROM Jobs WHERE title = ? AND companyName = ?";
+
+        //Declare prepared statement variables.
+        PreparedStatement deleteJobStmt;
+
+        try {
+
+            //Start Transaction by Setting Auto Commit to False
+            //  Note: we must re-enable auto-commit when we are done to restore the system to the default
+            //  state.
+            sql.setAutoCommit(false);
+
+            //Perform the first delete by preparing and executing the statement
+            deleteJobStmt = sql.prepareStatement(deleteJobString);
+            deleteJobStmt.setString(1, title);
+            deleteJobStmt.setString(2, companyName);
+            deleteJobStmt.executeUpdate();
+
+            //Commit the change to make the change live to the database.
+            sql.commit();
+
+        } catch(SQLException e) {
+
+            //If an exception occurs, we will roll back the transaction to avoid having an error state.
+
+            try {
+                System.out.println("Rolling Back Transaction.");
+
+                //Performs the roll back.
+                sql.rollback();
+            } catch(SQLException e2) {
+                System.out.println(e2.getMessage()); //Handle exception
+            }
+
+        } finally {
+
+            //Finally is called after the try ends by reaching the end of its code or from a return statement.
+            //  We include it here so that we can reenable autocommit and take it out of transaction mode.
+            try {
+                //Re-enable autocommit
+                sql.setAutoCommit(true);
+            } catch(SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void addJobApp() {
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("\nWhat is the title of the job you would like to apply to?\n");
+            String title = in.nextLine();
+
+            System.out.println("\nWhat is the name of the company you would like to apply to?\n");
+            String company = in.nextLine();
+
+            System.out.println("\nWhat is your username?\n");
+            String username = in.nextLine();
+
+            System.out.println("\nWhat is today's date? (Format: YYYY-MM-DD)\n");  
+            String date = in.nextLine();
+
+
+            String insertString = "INSERT INTO JobApplications VALUES (?, ?, ?, ?)";
+
+            //Building prepared statement
+            PreparedStatement insertStatement = sql.prepareStatement(insertString);
+            insertStatement.setString(1, title);
+            insertStatement.setString(2, company);
+            insertStatement.setString(3, username);
+            insertStatement.setDate(4, Date.valueOf(date));
+
+            //Execute the query and confirm that the new record was added.
+            int rows = insertStatement.executeUpdate();
+            if (rows != 1) {
+                System.out.println("ALERT: Insertion failed.");
+            }
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removeJobApp() {
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhat is the title of the job you would like to withdraw your application from?\n");
+        String title = in.nextLine();
+        System.out.println("What is the name of the company you would like to withdraw your applicaton from?");
+        String companyName = in.nextLine();
+        System.out.println("\nWhat is your username?\n");
+        String username = in.nextLine();
+    
+        String deleteJobString = "DELETE FROM JobApplications WHERE title = ? AND companyName = ? AND applicantUsername = ?";
+
+        //Declare prepared statement variables.
+        PreparedStatement deleteJobAppStmt;
+
+        try {
+
+            //Start Transaction by Setting Auto Commit to False
+            //  Note: we must re-enable auto-commit when we are done to restore the system to the default
+            //  state.
+            sql.setAutoCommit(false);
+
+            //Perform the first delete by preparing and executing the statement
+            deleteJobAppStmt = sql.prepareStatement(deleteJobString);
+            deleteJobAppStmt.setString(1, title);
+            deleteJobAppStmt.setString(2, companyName);
+            deleteJobAppStmt.setString(3, username);
+            deleteJobAppStmt.executeUpdate();
+
+            //Commit the change to make the change live to the database.
+            sql.commit();
+
+        } catch(SQLException e) {
+
+            //If an exception occurs, we will roll back the transaction to avoid having an error state.
+
+            try {
+                System.out.println("Rolling Back Transaction.");
+
+                //Performs the roll back.
+                sql.rollback();
+            } catch(SQLException e2) {
+                System.out.println(e2.getMessage()); //Handle exception
+            }
+
+        } finally {
+
+            //Finally is called after the try ends by reaching the end of its code or from a return statement.
+            //  We include it here so that we can reenable autocommit and take it out of transaction mode.
+            try {
+                //Re-enable autocommit
+                sql.setAutoCommit(true);
+            } catch(SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+}
