@@ -7,8 +7,8 @@ import java.util.Scanner;
  */
 
 public class App {
-    static String url = "jdbc:mariadb://localhost:3306/jobboard?useSSL=false";
-    static String user = "root";
+    static String url = "jdbc:mariadb://localhost:3306/JobBoard?useSSL=false";
+    static String user = "radjavij";
     static String pswd = "jo$hRad9";
     static SQLConnection connect = new SQLConnection(url, user, pswd);
     public static void main(String[] args) {
@@ -50,6 +50,20 @@ public class App {
                 case 6:
                     printSpecificJobApps();
                     break;
+                case 7:
+                    connect.addJob();
+                    break;
+                case 8:
+                    modifyJob();
+                    break;
+                case 9:
+                    connect.removeJob();
+                    break;
+                case 10:
+                    connect.addJobApp();
+                    break;
+                case 11:
+                    connect.removeJobApp();
                 case 12:
                     return;
             }

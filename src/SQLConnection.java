@@ -9,8 +9,11 @@
 
 
  import java.sql.*;
+ import java.util.Scanner;
 
- public class SQLConnection {
+ import static java.sql.Types.NULL;
+
+public class SQLConnection {
  
      //  DECLARE CLASS VARIABLES
  
@@ -179,6 +182,51 @@
          }
          catch(SQLException e) {
              System.out.println(e.getMessage()); //Handle exceptions
+         }
+     }
+
+     public void addJob() {
+         try {
+             Scanner in = new Scanner(System.in);
+             System.out.println("\nWhat is the title of the job?\n");
+             String title = in.nextLine();
+
+             System.out.println("\nWhat is the company name?\n");
+             String company = in.nextLine();
+
+             System.out.println("\nWhat is the required level of education?\n");
+             String education = in.nextLine();
+
+             System.out.println("\nWhat is the department?\n");
+             String department = in.nextLine();
+
+             System.out.println("\nHow many positions are available?\n");
+             int numPositions = in.nextInt();
+             in.nextLine();
+
+             System.out.println("\nWhat is the wage? (Format: X.XX)\n");
+             float wage = in.nextFloat();
+             in.nextLine();
+
+             System.out.println("\nWhat is the job description?\n");
+             String description = in.nextLine();
+
+             System.out.println("\nWhat is today's date?\n");   // TODO: Maybe modify this to automatically determine the date?
+             String date = in.nextLine();
+
+
+             String query = "INSERT INTO Jobs VALUES (" + title + ", " + company + ", " + education + ", " + department + ", " + numPositions + ", " + wage + ", " + description + ", " + date + ")";
+
+             //Request a Statement object from SQL class
+             Statement stmt = sql.createStatement();
+
+             //Execute the query
+             stmt.executeQuery(query); // TODO: Check how this works, if im doing it right
+
+             System.out.println("\nJob added successfully!");
+         }
+         catch(SQLException e) {
+             System.out.println(e.getMessage());
          }
      }
  
