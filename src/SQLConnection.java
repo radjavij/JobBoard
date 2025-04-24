@@ -72,9 +72,9 @@ public class SQLConnection {
             String query = "SELECT * FROM Jobs WHERE " + attribute;
 
             Statement stmt = sql.createStatement();
+        
 
             ResultSet results = stmt.executeQuery(query);
-
             while (results.next()) {
                 System.out.printf("%s, %s, %s, %s, %d, %.2f, %s, %s\n",
                         results.getString("title"),
@@ -175,6 +175,7 @@ public class SQLConnection {
                          results.getString("applicantUsername"),
                          results.getString("appDate"));
              }
+
          }
          catch(SQLException e) {
              System.out.println(e.getMessage()); //Handle exceptions
@@ -226,9 +227,7 @@ public class SQLConnection {
  
              //Execute the query and confirm that the new record was added.
              int rows = insertStatement.executeUpdate();
-             if (rows != 1) {
-                 System.out.println("ALERT: Insertion failed.");
-             }
+
          }
          catch(SQLException e) {
              System.out.println(e.getMessage());
@@ -357,7 +356,7 @@ public class SQLConnection {
         System.out.println("\nWhat is your username?\n");
         String username = in.nextLine();
     
-        String deleteJobString = "DELETE FROM JobApplications WHERE title = ? AND companyName = ? AND applicantUsername = ?";
+        String deleteJobString = "DELETE FROM JobApplications WHERE jobTitle = ? AND company = ? AND applicantUsername = ?";
 
         //Declare prepared statement variables.
         PreparedStatement deleteJobAppStmt;
