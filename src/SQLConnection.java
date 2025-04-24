@@ -3,8 +3,6 @@
  *
  * This file provides some simple demonstration of SQL Connections and Integrations with Java.
  *
- * Operations to be performed include:
- *   SELECT
  */
 
 
